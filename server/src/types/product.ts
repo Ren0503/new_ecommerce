@@ -33,6 +33,7 @@ export interface Product {
     numOf3StartsReviews: number;
     numOf2StartsReviews: number;
     numOf1StartsReviews: number;
+    countInStock: number;
 }
 
 export interface ProductDocument extends Product, Document {}

@@ -8,8 +8,8 @@ export interface WishList {
     productRating: number;
     productNumReviews: number;
     onSales: number;
-    newProduct: boolean;
-    preOrder: boolean;
+    newProduct?: boolean;
+    preOrder?: boolean;
 }
 
 export interface CartList {

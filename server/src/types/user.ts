@@ -1,6 +1,7 @@
 import mongoose, { Document } from 'mongoose';
 
 export interface WishList {
+    _id?: string;
     itemId: string;
     productName: string;
     productPrice: number;
@@ -18,8 +19,8 @@ export interface CartList {
     productPrice: number;
     productImage: string;
     onSales: number;
-    newProduct: boolean;
-    preOrder: boolean;
+    newProduct?: boolean;
+    preOrder?: boolean;
     countInStock: number;
     quantity: number;
 }

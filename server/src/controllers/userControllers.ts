@@ -39,7 +39,7 @@ export const getCurrentUserStatus = asyncHandler(async (req: Request, res: Respo
     const user = await User.findById(req.user?._id);
 
     if (user) {
-        res.status(200).send({
+        res.status(200).json({
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
@@ -171,7 +171,7 @@ export const getUsers = asyncHandler(async (req: Request, res: Response) => {
         throw new Error("There are no users in the databases");
     }
 
-    res.status(200).send({ page: currentPage, pages: Math.ceil(count / totalPageSize), users });
+    res.status(200).json({ page: currentPage, pages: Math.ceil(count / totalPageSize), users });
 });
 
 /**
@@ -249,8 +249,7 @@ export const getWishListItems = asyncHandler(async (req: Request, res: Response)
 
     if (user) {
         const theWishList = [...user.wishList];
-        res.status(200);
-        res.send(theWishList);
+        res.status(200).json(theWishList);
     } else {
         res.status(404);
         throw new Error('User is not existed');
@@ -263,14 +262,14 @@ export const getWishListItems = asyncHandler(async (req: Request, res: Response)
  * @access Private
  */
 export const addItemToUserWishList = asyncHandler(async (req: Request, res: Response) => {
-    const { 
-        itemId, 
-        productName, 
-        productPrice, 
-        productImage, 
-        productRating, 
-        productNumReviews, 
-        onSales 
+    const {
+        itemId,
+        productName,
+        productPrice,
+        productImage,
+        productRating,
+        productNumReviews,
+        onSales
     } = req.body as {
         itemId: string
         productName: string
@@ -304,3 +303,210 @@ export const addItemToUserWishList = asyncHandler(async (req: Request, res: Resp
     }
 });
 
+/**
+ * @description Delete an item from the wishlist
+ * @method DELETE /api/users/wishlist/delete_item/:id
+ * @access Private
+ */
+export const deleteItemFromWishlist = asyncHandler(async (req: Request, res: Response) => {
+    const wishListItemId = req.params.id;
+    const user = await User.findById(req.user?._id);
+
+    if (user) {
+        let deleteIndex;
+        for (let i = 0; i < user.wishList.length; i++) {
+            if (user.wishList[i]._id == wishListItemId) {
+                deleteIndex = i;
+                break;
+            }
+        }
+
+        if (deleteIndex == undefined) {
+            res.status(404);
+            throw new Error("Can't find the item that you want to delete base on this wishListItemId");
+        }
+
+        user.wishList.splice(deleteIndex, 1);
+        await user.save();
+
+        res.status(200).json("Delete the item from wishList successfully");
+    } else {
+        res.status(404);
+        throw new Error('User not found.');
+    }
+});
+
+/**
+ * @description Delete all items from the wishlist
+ * @method DELETe /api/users/wishlist/delete_item
+ * @access Private
+ */
+export const deleteAllItemFromWishlist = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findById(req.user?._id);
+
+    if (user) {
+        user.wishList = [];
+        await user.save();
+
+        res.status(200).json("Clear all items in the wish list successfully");
+    } else {
+        res.status(404);
+        throw new Error("Can't find the user that you are looking for");
+    }
+});
+
+/**
+ * @description Add an item to the cart
+ * @method POST /api/users/cart/add_item
+ * @access Private
+ */
+export const addItemToCart = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findById(req.user?._id);
+    const { 
+        itemId, 
+        productName, 
+        productImage, 
+        productPrice, 
+        onSales, 
+        countInStock, 
+        quantity 
+    } = req.body as {
+        itemId: string
+        productName: string
+        productImage: string
+        productPrice: number
+        onSales: number
+        countInStock: number
+        quantity: number
+    }
+    
+    if (user) {
+        const item = {
+            itemId,
+            productName, 
+            productImage, 
+            productPrice, 
+            onSales,
+            countInStock, 
+            quantity
+        }
+
+        const existedItem = user.cartList.find(x => x.itemId === item.itemId);
+        if (existedItem) {
+            res.status(400);
+            throw new Error("This item is already in the cart");
+        }
+
+        console.log(user.cartList);
+
+        user.cartList.push({
+            itemId,
+            productName, 
+            productImage, 
+            productPrice, 
+            onSales,
+            countInStock, 
+            quantity
+        });
+
+        const savedUser = await user.save();
+        res.status(200).json(savedUser);
+    } else {
+        res.status(404);
+        throw new Error('Cant find the user')
+    }
+});
+
+/**
+ * @description Remove an item from the cart
+ * @method DELETE /api/users/cart/remove_item/:id
+ * @access Private
+ */
+export const removeItemFromCart = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findById(req.user?._id);
+    const cartItemId = req.params.id as string;
+
+    if (user) {
+        let deletedIndex;
+        for (let i = 0; i < user.cartList.length; i++) {
+            if (user.cartList[i].itemId == cartItemId) {
+                deletedIndex = i;
+                break;
+            }
+        }
+
+        if (deletedIndex === undefined) {
+            res.status(404);
+            throw new Error("Can't find the item in the cart with this Id, please try again");
+        }
+
+        user.cartList.splice(deletedIndex, 1);
+        await user.save();
+
+        res.status(200).json('Delete item from cartList successfully');
+    } else {
+        res.status(404);
+        throw new Error('User is not existed');
+    }
+});
+
+/**
+ * @description Get all items from the cart
+ * @method GET /api/users/cart
+ * @access Private
+ */
+export const getUserCartList = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findById(req.user?._id);
+
+    if (user) {
+        res.status(200).json(user.cartList);
+    } else {
+        res.status(404);
+        throw new Error("Can't find user with this ID");
+    }
+});
+
+/**
+ * @description Get a user based on the given token
+ * @method GET /api/resetPassword/:resetPasswordToken
+ * @access Public
+ */
+export const matchEmailByToken = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findOne({
+        resetPasswordToken: req.params.resetPasswordToken
+    });
+
+    if (user) {
+        res.status(200).send({
+            email: user.email,
+            message: 'password reset link a-ok'
+        });
+    } else {
+        res.json('Link have expired!');
+    }
+});
+
+/**
+ * @description Post change the password of the current user
+ * @method POST /api/resetPassword/updatePasswordByEmail
+ * @access Public
+ */
+export const updatePasswordByEmail = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findOne({
+        email: req.body.email
+    });
+
+    if (user) {
+        user.password = req.body.password;
+        // Hashing function is in model file
+        await user.save();
+
+        res.status(200).send({
+            message: 'password updated'
+        });
+
+    } else {
+        res.status(404);
+        throw new Error('This user is not existed');
+    }
+});

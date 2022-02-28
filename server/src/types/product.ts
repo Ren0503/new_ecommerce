@@ -6,10 +6,10 @@ export interface Review {
     rating: number;
     comment: string;
     user: string;
-    numOfLikes: number;
-    likes: User[];
-    numOfDislikes: number;
-    dislikes: User[];
+    numOfLikes?: number;
+    likes?: User[];
+    numOfDislikes?: number;
+    dislikes?: User[];
 }
 
 export interface Product {
@@ -28,11 +28,11 @@ export interface Product {
     onSale: number;
     newProduct: boolean;
     preOrder: boolean;
-    numOf5StartsReviews: number;
-    numOf4StartsReviews: number;
-    numOf3StartsReviews: number;
-    numOf2StartsReviews: number;
-    numOf1StartsReviews: number;
+    numOf5StarsReviews: number;
+    numOf4StarsReviews: number;
+    numOf3StarsReviews: number;
+    numOf2StarsReviews: number;
+    numOf1StarsReviews: number;
     countInStock: number;
 }
 

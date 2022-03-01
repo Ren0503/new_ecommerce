@@ -73,10 +73,6 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    youtube: {
-        type: String,
-        required: true
-    },
     reviews: [reviewSchema],
     details: {
         type: Object,

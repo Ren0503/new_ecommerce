@@ -2,6 +2,7 @@ import mongoose, { Document } from 'mongoose';
 import { User } from './user';
 
 export interface Review {
+    _id?: string;
     name: string;
     rating: number;
     comment: string;

@@ -23,7 +23,7 @@ import {
     
     matchEmailByToken,
     updatePasswordByEmail,
-} from '../controllers/userControllers';
+} from '../controllers/users';
 
 const router = express.Router();
 

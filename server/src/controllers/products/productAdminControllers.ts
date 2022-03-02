@@ -33,7 +33,7 @@ export const createProduct = asyncHandler(async (req: Request, res: Response) =>
     });
 
     await product.save();
-    res.status(201).send(product);
+    res.status(201).json(product);
 });
 
 /**

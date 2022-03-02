@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 
-import { User } from '../../models';
-import { Request, Response } from '../../types';
+import { User } from 'models';
+import { Request, Response } from 'types';
 
 /**
  * @description Get all users

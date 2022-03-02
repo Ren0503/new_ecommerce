@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../models';
-import { Request, Response, NextFunction } from '../types';
+import { User } from 'models';
+import { Request, Response, NextFunction } from 'types';
 import asyncHandler from 'express-async-handler';
 
 interface Decoded {

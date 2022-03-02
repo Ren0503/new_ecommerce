@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ProductDocument } from '../types';
+import { ProductDocument } from 'types';
 
 const reviewSchema = new mongoose.Schema({
     name: {

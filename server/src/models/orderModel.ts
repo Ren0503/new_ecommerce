@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { OrderDocument } from '../types';
+import { OrderDocument } from 'types';
 
 const orderSchema = new mongoose.Schema({
     user: {

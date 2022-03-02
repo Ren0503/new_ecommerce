@@ -1,5 +1,5 @@
 import express from 'express';
-import { protect, admin } from '../middleware';
+import { protect, admin } from 'middleware';
 import {
     login,
     register,

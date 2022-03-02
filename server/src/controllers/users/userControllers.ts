@@ -1,8 +1,8 @@
 import asyncHandler from 'express-async-handler';
 
-import { User } from '../../models';
-import { Request, Response } from '../../types';
-import { generateToken } from '../../utils';
+import { User } from 'models';
+import { Request, Response } from 'types';
+import { generateToken } from 'utils';
 
 /**
  * @description Authenticate user & get token

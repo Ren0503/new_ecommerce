@@ -1,5 +1,5 @@
 import express from 'express';
-import { protect, admin } from '../middleware';
+import { protect, admin } from 'middleware';
 import {
     addOrder,
     getOrderById,
@@ -8,7 +8,7 @@ import {
     
     getAllOrders,
     changeIsDeliveredStatus,
-} from '../controllers/orders';
+} from 'controllers/orders';
 
 const router = express.Router();
 

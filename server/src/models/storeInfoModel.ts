@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { StoreInfoDocument } from '../types';
+import { StoreInfoDocument } from 'types';
 
 const storeInfoSchema = new mongoose.Schema({
     name: {

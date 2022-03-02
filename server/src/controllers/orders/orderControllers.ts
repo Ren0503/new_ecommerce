@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 
-import { Order, User } from '../../models';
-import { Request, Response } from '../../types';
+import { Order, User } from 'models';
+import { Request, Response } from 'types';
 
 /**
  * @description Create an order

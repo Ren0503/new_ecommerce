@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 
-import { Product } from '../../models';
-import { Request, Response } from '../../types';
+import { Product } from 'models';
+import { Request, Response } from 'types';
 
 /**
  * @description Create a product
